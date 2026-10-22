@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HomeBound - FHSU Student Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3ead8; --bg2:#e9dcc0; --panel:#fffaf0; --panel2:#f7efdc;
+  --gold:#c0a060; --gold2:#8a6d2f; --text:#2b2a1f; --muted:#6f684f;
+  --line:#dccfae; --green:#2f7a45; --red:#b3402f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.5;min-height:100vh}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}
+.banner{background:#1f1d14;color:#d4b878;text-align:center;font-size:.8rem;padding:6px 12px;letter-spacing:.03em}
+header{--bg:#2f2d20;--bg2:#3a372a;--text:#f2ede0;--muted:#b9b29c;--line:#5a5440;--gold2:#d4b878;background:#2f2d20;color:#f2ede0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:18px 5vw;border-bottom:1px solid var(--line)}
+.logo{cursor:pointer}
+.logo h1{font-family:'Cormorant Garamond',Georgia,serif;font-variant:small-caps;font-size:2rem;font-weight:600;line-height:1}
+.logo span{font-size:.78rem;color:var(--muted);font-style:italic}
+nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+nav a{color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:.92rem;border:1px solid transparent}
+nav a:hover{color:var(--text)}
+nav a.active{color:var(--text);background:var(--bg2);border-color:var(--line)}
+.btn{background:var(--gold);color:#241f10;border:none;border-radius:8px;padding:11px 20px;font-weight:600;font-size:.95rem;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--gold2)}
+.btn.outline{background:transparent;color:var(--text);border:1px solid var(--gold)}
+.btn.outline:hover{background:rgba(192,160,96,.12)}
+.btn.small{padding:7px 12px;font-size:.82rem}
+.btn.ghost{background:transparent;color:var(--gold2);border:1px dashed var(--gold);}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--gold);color:#241f10;font-weight:700;display:none;align-items:center;justify-content:center;cursor:pointer}
+main{max-width:1050px;margin:0 auto;padding:32px 5vw 80px}
+.view{display:none}.view.active{display:block}
+.hero{text-align:center;padding:30px 0 22px}
+.hero h2{font-family:'Cormorant Garamond',Georgia,serif;font-variant:small-caps;font-size:clamp(1.9rem,5vw,3rem);font-weight:600}
+.hero p{color:var(--muted);margin-top:6px}
+.search{display:flex;gap:8px;max-width:520px;margin:18px auto 14px}
+.search input{flex:1}
+input,select{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:12px 14px;font-size:.95rem;font-family:inherit;width:100%}
+input:focus,select:focus{outline:2px solid var(--gold);outline-offset:0}
+label{display:block;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.chip{padding:8px 16px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;font-size:.88rem;font-family:inherit}
+.chip.active{background:var(--gold);color:#241f10;border-color:var(--gold);font-weight:600}
+h3.section{font-family:'Cormorant Garamond',Georgia,serif;font-variant:small-caps;font-size:1.6rem;margin:30px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.thumb{height:170px;background:#e6dabc;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.85rem;text-align:center;position:relative;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.upload img{max-height:160px;border-radius:8px;display:block;margin:0 auto}
+.tag{position:absolute;top:10px;left:10px;background:var(--gold);color:#241f10;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:12px}
+.card .body{padding:14px 16px;flex:1}
+.card h4{font-family:'Cormorant Garamond',Georgia,serif;font-variant:small-caps;font-size:1.3rem}
+.price{font-size:1.4rem;font-weight:600;margin:2px 0}
+.meta{color:var(--muted);font-size:.82rem}
+.card .actions{display:flex;gap:8px;padding:0 16px 16px}
+.card .actions .btn{flex:1}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px;max-width:640px;margin:0 auto}
+.upload{border:2px dashed var(--line);border-radius:10px;padding:28px;text-align:center;color:var(--muted);cursor:pointer}
+.upload:hover{border-color:var(--gold);color:var(--gold2)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;padding:14px 16px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}
+.switch{position:relative;width:48px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:#cfc3a2;border-radius:26px;cursor:pointer;transition:.2s}
+.slider:before{content:"";position:absolute;height:20px;width:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked+.slider{background:var(--gold)}
+.switch input:checked+.slider:before{transform:translateX(22px)}
+.callout{color:var(--gold2);font-size:.82rem;font-style:italic;margin-top:6px}
+.callout:before{content:"\2191  "}
+#storageFields{display:none;margin-top:6px}
+.note{color:var(--muted);font-size:.85rem;margin-top:10px}
+.tracker{display:flex;align-items:center;margin:18px 0 8px}
+.step{flex:1;text-align:center;position:relative}
+.step .dot{width:34px;height:34px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;background:#e2d6b8;color:var(--muted);font-weight:700;position:relative;z-index:1}
+.step .lbl{font-size:.82rem;color:var(--muted)}
+.step:not(:last-child):after{content:"";position:absolute;top:16px;left:50%;width:100%;height:3px;background:#e2d6b8}
+.step.done .dot{background:#2f6b3e;color:#fff}
+.step.done:not(:last-child):after{background:#2f6b3e}
+.step.active .dot{background:var(--gold);color:#241f10}
+.step.active .lbl,.step.done .lbl{color:var(--text);font-weight:600}
+.stored{max-width:640px;margin:0 auto 18px}
+.stored .head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.empty{text-align:center;color:var(--muted);padding:40px 0}
+table{width:100%;border-collapse:collapse;background:var(--panel);border-radius:12px;overflow:hidden;font-size:.9rem}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:var(--panel2);color:var(--gold2);font-weight:600}
+.yes{color:var(--green)}.no{color:var(--red)}
+.tablewrap{overflow-x:auto}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px;max-width:720px;margin-left:auto;margin-right:auto}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--muted);margin-top:8px;font-size:.92rem}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(15,14,9,.78);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+.overlay.open{display:flex}
+.modal{--panel:#3b3729;--panel2:#2a281d;--text:#f2ede0;--muted:#b9b29c;--line:#5a5440;--gold2:#d4b878;--green:#7fc08a;--red:#e57373;color:#f2ede0;background:var(--panel);border:1px solid var(--line);border-radius:14px;width:100%;max-width:440px;padding:32px 30px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal .x{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer}
+.modal h2{font-family:'Cormorant Garamond',Georgia,serif;font-variant:small-caps;font-size:2rem;text-align:center}
+.modal .sub{text-align:center;color:var(--muted);margin:6px 0 14px;font-size:.95rem}
+.badge{display:block;width:fit-content;margin:0 auto 6px;border:1px solid var(--green);color:var(--green);background:rgba(127,192,138,.1);border-radius:20px;padding:6px 14px;font-size:.82rem}
+.help{color:var(--muted);font-size:.8rem;margin-top:6px}
+.err{color:var(--red);font-size:.85rem;margin-top:6px;display:none}
+.modal .btn.full{width:100%;margin-top:20px;padding:13px}
+.fine{text-align:center;color:var(--muted);font-size:.78rem;margin-top:12px}
+.concept{border-top:1px solid var(--line);margin-top:18px;padding-top:12px;text-align:center;color:var(--gold2);font-size:.75rem;font-style:italic}
+.otp{display:flex;gap:8px;justify-content:center;margin-top:14px}
+.otp input{width:46px;height:54px;text-align:center;font-size:1.4rem;padding:0}
+.link{color:var(--gold2);background:none;border:none;cursor:pointer;text-decoration:underline;font-size:.85rem;font-family:inherit}
+.step2{display:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gold);color:#241f10;padding:12px 22px;border-radius:10px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="banner">Concept prototype. Not a live product.</div>
+
+<header>
+  <div class="logo" onclick="go('home')">
+    <h1>HomeBound</h1>
+    <span>Student to Student Marketplace</span>
+  </div>
+  <nav>
+    <a data-nav="home" class="active" onclick="go('home')">Buying</a>
+    <a data-nav="sell" onclick="go('sell')">Selling</a>
+    <a data-nav="storage" onclick="go('storage')">My Storage</a>
+    <a data-nav="compare" onclick="go('compare')">Compare</a>
+    <a data-nav="help" onclick="go('help')">Help</a>
+    <button class="btn outline small" id="signInBtn" onclick="openModal()">Sign In</button>
+    <div class="avatar" id="avatar" title="Signed in" onclick="signOut()"></div>
+  </nav>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section class="view active" id="view-home">
+  <div class="hero">
+    <h2>Campus buying and selling made easy</h2>
+    <p>Only for the FHSU community. Sellers can store items on campus until they sell.</p>
+    <div class="search">
+      <input id="q" placeholder="Search furniture, appliances, supplies..." oninput="renderListings()">
+    </div>
+    <div class="chips" id="chips">
+      <button class="chip active" data-cat="all">All Items</button>
+      <button class="chip" data-cat="Furniture">Furniture</button>
+      <button class="chip" data-cat="Electronics">Electronics</button>
+      <button class="chip" data-cat="Appliances">Appliances</button>
+      <button class="chip" data-cat="Clothes">Clothes</button>
+      <button class="chip" data-cat="stored">Campus Storage</button>
+    </div>
+  </div>
+  <h3 class="section">Featured Campus Listings</h3>
+  <div class="grid" id="listings"></div>
+</section>
+
+<!-- SELL -->
+<section class="view" id="view-sell">
+  <h3 class="section" style="text-align:center">Create a Listing</h3>
+  <div class="panel">
+    <label class="upload" id="uploadBox" style="display:block;text-transform:none;letter-spacing:0;font-size:.95rem;margin:0">
+      <span id="uploadText">Click to add a photo</span>
+      <img id="uploadPreview" alt="Preview" style="display:none">
+      <input type="file" accept="image/*" id="fPhoto" style="display:none" onchange="previewPhoto(this)">
+    </label>
+    <label>Title</label>
+    <input id="fTitle" placeholder="e.g. Adjustable table">
+    <div class="row">
+      <div><label>Price ($)</label><input id="fPrice" type="number" min="0" placeholder="50"></div>
+      <div><label>Category</label>
+        <select id="fCat">
+          <option>Electronics</option><option>Furniture</option><option>Clothes</option><option>Appliances</option><option>School supplies</option>
+        </select></div>
+    </div>
+    <label>Condition</label>
+    <select id="fCond"><option>Like new</option><option selected>Good</option><option>Fair</option></select>
+
+    <div class="toggle-row">
+      <div>
+        <strong>Request storage until sold</strong>
+        <div class="note" style="margin-top:2px">Leave it with HomeBound. No car needed.</div>
+      </div>
+      <label class="switch" style="margin:0">
+        <input type="checkbox" id="fStore" onchange="toggleStorage()">
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="callout">Pick storage here</div>
+
+    <div id="storageFields">
+      <p class="note">Drop off on campus. We'll list it and hold it until it sells.</p>
+      <div class="row">
+        <div><label>Drop-off date</label><input type="date" id="fDate"></div>
+        <div><label>Time slot</label>
+          <select id="fTime"><option>9:00 - 11:00 AM</option><option>11:00 AM - 1:00 PM</option><option>1:00 - 3:00 PM</option><option>3:00 - 5:00 PM</option></select></div>
+      </div>
+      <label>Location</label>
+      <input value="Campus storage point (TBD)" readonly>
+    </div>
+    <button class="btn" style="width:100%;margin-top:22px;padding:13px" onclick="postListing()">Post Listing</button>
+  </div>
+</section>
+
+<!-- STORAGE -->
+<section class="view" id="view-storage">
+  <h3 class="section" style="text-align:center">Your stored items</h3>
+  <div id="storedList"></div>
+  <div class="callout" style="text-align:center">Track your item</div>
+  <p class="note" style="text-align:center">Demo tip: use the "Advance status" button to show an item moving from Dropped off to Listed to Sold.</p>
+</section>
+
+<!-- COMPARE -->
+<section class="view" id="view-compare">
+  <h3 class="section" style="text-align:center">HomeBound vs. the alternatives</h3>
+  <div class="tablewrap">
+  <table>
+    <tr><th>Feature</th><th>HomeBound</th><th>Facebook Marketplace</th><th>Craigslist</th></tr>
+    <tr><td>FHSU-only community</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+    <tr><td>Verified FHSU email</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+    <tr><td>On-campus storage until sold</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+    <tr><td>No car needed to meet buyers</td><td class="yes">Yes</td><td class="no">Usually needed</td><td class="no">Usually needed</td></tr>
+    <tr><td>Built for move-out week</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+    <tr><td>Fee to sellers</td><td>10% on completed sales</td><td>Varies</td><td>Free to post</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- HELP -->
+<section class="view" id="view-help">
+  <h3 class="section" style="text-align:center">Help</h3>
+  <details><summary>How does storage work?</summary><p>Pick a drop-off time when you list. Bring the item to the campus storage point. We photograph it, list it, and hold it until it sells. The buyer picks it up at a set time.</p></details>
+  <details><summary>What does it cost?</summary><p>Browsing and listing are free. HomeBound takes a 10% fee on completed sales, which covers running the platform and storage.</p></details>
+  <details><summary>What if my item doesn't sell?</summary><p>We notify you and suggest a lower price. After the storage limit, you pick it up or it is donated.</p></details>
+  <details><summary>Who can sign in?</summary><p>Anyone with an @mail.fhsu.edu or @fhsu.edu email. We send a 6-digit code to your inbox. HomeBound never sees or stores your university password.</p></details>
+</section>
+
+</main>
+
+<!-- SIGN-IN MODAL -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="x" onclick="closeModal()" aria-label="Close">&times;</button>
+
+    <div id="step1">
+      <h2>HomeBound</h2>
+      <p class="sub">Sign in to buy, sell, or schedule move-out storage.</p>
+      <span class="badge">&#128274; FHSU Email Verification Required</span>
+      <label>FHSU Email Address</label>
+      <input id="email" type="email" placeholder="username@mail.fhsu.edu" autocomplete="off" onkeydown="if(event.key==='Enter')sendCode()">
+      <div class="help">Exclusive to @mail.fhsu.edu &amp; @fhsu.edu users</div>
+      <div class="err" id="emailErr">Please use your FHSU email.</div>
+      <button class="btn full" onclick="sendCode()">Send Verification Code</button>
+      <p class="fine">We'll email you a 6-digit code. HomeBound never sees or stores your university password.</p>
+    </div>
+
+    <div id="step2" class="step2">
+      <h2>Check your inbox</h2>
+      <p class="sub" id="sentTo"></p>
+      <div class="otp" id="otp"></div>
+      <div class="err" id="codeErr" style="text-align:center">Enter all 6 digits.</div>
+      <button class="btn full" onclick="verify()">Verify and Sign In</button>
+      <p class="fine"><button class="link" onclick="resend()">Resend code</button> &nbsp;|&nbsp; <button class="link" onclick="backToEmail()">Change email</button></p>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- demo data ---------- */
+/* Put your photos in a folder named "images" next to this file, with these names */
+const listings = [
+  {name:"Adjustable Table", price:50, cat:"Furniture", stored:true,  img:"images/table.jpg"},
+  {name:"Mini Fridge",      price:45, cat:"Appliances", stored:true, img:"images/fridge.jpg"},
+  {name:"Desk Lamp",        price:12, cat:"Electronics", stored:false, img:"images/lamp.jpg"},
+  {name:"Winter Jacket",    price:25, cat:"Clothes", stored:false, img:"images/jacket.jpg"},
+  {name:"Microwave",        price:20, cat:"Appliances", stored:true, img:"images/microwave.jpg"},
+  {name:"Bookshelf",        price:30, cat:"Furniture", stored:false, img:"images/bookshelf.jpg"}
+];
+let photoURL = null;
+function previewPhoto(input){
+  const f = input.files && input.files[0];
+  if(!f) return;
+  photoURL = URL.createObjectURL(f);
+  const p = document.getElementById('uploadPreview');
+  p.src = photoURL; p.style.display = 'block';
+  document.getElementById('uploadText').style.display = 'none';
+}
+function imgFail(el){ el.parentNode.insertAdjacentHTML('afterbegin','<span>Add photo:<br>'+el.getAttribute('src')+'</span>'); el.remove(); }
+const STEPS = ["Dropped off","Listed","Sold"];
+let storedItems = [
+  {name:"Adjustable table", price:50, step:1, drop:"Fri, May 8 at 1:00 - 3:00 PM"},
+  {name:"Mini fridge", price:45, step:0, drop:"Sat, May 9 at 9:00 - 11:00 AM"}
+];
+let user = null, pendingView = null, currentEmail = "", activeCat = "all";
+
+/* ---------- navigation ---------- */
+function go(view){
+  if((view==='sell' || view==='storage') && !user){ pendingView = view; openModal(); return; }
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+(view==='home'?'home':view)).classList.add('active');
+  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active', a.dataset.nav===view));
+  if(view==='storage') renderStored();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- toast ---------- */
+let tt;
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+/* ---------- listings ---------- */
+function renderListings(){
+  const q=document.getElementById('q').value.toLowerCase();
+  const el=document.getElementById('listings');
+  const items=listings.filter(l=>{
+    const catOk = activeCat==='all' || (activeCat==='stored'? l.stored : l.cat===activeCat);
+    return catOk && l.name.toLowerCase().includes(q);
+  });
+  if(!items.length){ el.innerHTML='<div class="empty">No items found.</div>'; return; }
+  el.innerHTML=items.map(l=>`
+    <div class="card">
+      <div class="thumb"><img src="${l.img}" alt="${l.name}" onerror="imgFail(this)">${l.stored?'<span class="tag">Stored on campus</span>':''}</div>
+      <div class="body">
+        <h4>${l.name}</h4>
+        <div class="price">$${l.price}</div>
+        <div class="meta">Reused for 12 months. Location: Hays, KS</div>
+      </div>
+      <div class="actions">
+        <button class="btn outline small" onclick="demoAction()">Message Seller</button>
+        <button class="btn small" onclick="demoAction()">Buy</button>
+      </div>
+    </div>`).join('');
+}
+function demoAction(){ toast('Demo only'); }
+document.getElementById('chips').addEventListener('click',e=>{
+  if(!e.target.classList.contains('chip')) return;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  e.target.classList.add('active'); activeCat=e.target.dataset.cat; renderListings();
+});
+
+/* ---------- create listing ---------- */
+function toggleStorage(){
+  document.getElementById('storageFields').style.display = document.getElementById('fStore').checked ? 'block':'none';
+}
+function postListing(){
+  const title=document.getElementById('fTitle').value.trim();
+  const price=document.getElementById('fPrice').value;
+  if(!title || !price){ toast('Please add a title and price'); return; }
+  const store=document.getElementById('fStore').checked;
+  const cat=document.getElementById('fCat').value;
+  listings.unshift({name:title, price:Number(price), cat:cat==='School supplies'?'Electronics':cat, stored:store, img:photoURL || "images/box.jpg"});
+  renderListings();
+  document.getElementById('fTitle').value=''; document.getElementById('fPrice').value='';
+  photoURL=null; document.getElementById('fPhoto').value='';
+  document.getElementById('uploadPreview').style.display='none';
+  document.getElementById('uploadText').style.display='inline';
+  toast('Listing posted');
+  if(store){
+    const d=document.getElementById('fDate').value;
+    const t=document.getElementById('fTime').value;
+    let nice='Date to be set';
+    if(d){ nice=new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
+    storedItems.unshift({name:title, price:Number(price), step:0, drop:nice+' at '+t});
+    document.getElementById('fStore').checked=false; toggleStorage();
+    setTimeout(()=>go('storage'),700);
+  } else { setTimeout(()=>go('home'),700); }
+}
+
+/* ---------- storage tracker ---------- */
+function renderStored(){
+  const el=document.getElementById('storedList');
+  if(!storedItems.length){ el.innerHTML='<div class="empty">No stored items yet. Create a listing and turn on "Request storage until sold".</div>'; return; }
+  el.innerHTML=storedItems.map((s,i)=>`
+    <div class="panel stored">
+      <div class="head"><h4 class="serif" style="font-size:1.5rem;font-variant:small-caps">${s.name}, $${s.price}</h4>
+        <span class="meta">${s.step===2?'Sold':'In storage'}</span></div>
+      <div class="tracker">
+        ${STEPS.map((n,k)=>`<div class="step ${k<s.step||(k===s.step&&s.step===2)?'done':k===s.step?'active':''}">
+          <div class="dot">${(k<s.step||(k===s.step&&s.step===2))?'&#10003;':k+1}</div><div class="lbl">${n}</div></div>`).join('')}
+      </div>
+      <p class="note">Drop-off: ${s.drop}</p>
+      <p class="note">Pickup by buyer: arranged in app</p>
+      ${s.step<2?`<button class="btn ghost small" style="margin-top:12px" onclick="advance(${i})">Advance status (demo)</button>`:''}
+    </div>`).join('');
+}
+function advance(i){ if(storedItems[i].step<2){ storedItems[i].step++; renderStored(); toast('Status: '+STEPS[storedItems[i].step]); } }
+
+/* ---------- sign-in modal ---------- */
+function buildOtp(){
+  const box=document.getElementById('otp'); box.innerHTML='';
+  for(let i=0;i<6;i++){
+    const inp=document.createElement('input');
+    inp.maxLength=1; inp.inputMode='numeric'; inp.autocomplete='off';
+    inp.addEventListener('input',()=>{
+      inp.value=inp.value.replace(/\D/g,'');
+      if(inp.value && inp.nextElementSibling) inp.nextElementSibling.focus();
+    });
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='Backspace' && !inp.value && inp.previousElementSibling) inp.previousElementSibling.focus();
+      if(e.key==='Enter') verify();
+    });
+    inp.addEventListener('paste',e=>{
+      e.preventDefault();
+      const digits=(e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,6);
+      [...box.children].forEach((c,k)=>c.value=digits[k]||'');
+    });
+    box.appendChild(inp);
+  }
+}
+function openModal(){
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('step1').style.display='block';
+  document.getElementById('step2').style.display='none';
+  document.getElementById('emailErr').style.display='none';
+  setTimeout(()=>document.getElementById('email').focus(),50);
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); pendingView=null; }
+function sendCode(){
+  const v=document.getElementById('email').value.trim().toLowerCase();
+  const ok=/^[^\s@]+@(mail\.fhsu\.edu|fhsu\.edu)$/.test(v);
+  const err=document.getElementById('emailErr');
+  if(!ok){ err.style.display='block'; return; }
+  err.style.display='none'; currentEmail=v;
+  document.getElementById('sentTo').textContent='We sent a 6-digit code to '+v+'.';
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='block';
+  document.getElementById('codeErr').style.display='none';
+  buildOtp(); document.getElementById('otp').firstChild.focus();
+}
+function resend(){ toast('Code resent (demo)'); }
+function backToEmail(){ document.getElementById('step2').style.display='none'; document.getElementById('step1').style.display='block'; }
+function verify(){
+  const code=[...document.getElementById('otp').children].map(i=>i.value).join('');
+  if(code.length<6){ document.getElementById('codeErr').style.display='block'; return; }
+  const name=currentEmail.split('@')[0].replace(/[^a-z]/gi,' ').trim();
+  const parts=name.split(/\s+/).filter(Boolean);
+  const initials=((parts[0]||'U')[0]+(parts[1]?parts[1][0]:(parts[0]||'U')[1]||'')).toUpperCase();
+  user={email:currentEmail,initials};
+  const av=document.getElementById('avatar'); av.textContent=initials; av.style.display='flex';
+  document.getElementById('signInBtn').style.display='none';
+  document.getElementById('overlay').classList.remove('open');
+  toast('Signed in. Welcome to HomeBound.');
+  if(pendingView){ const p=pendingView; pendingView=null; go(p); }
+}
+function signOut(){
+  if(!confirm('Sign out?')) return;
+  user=null; document.getElementById('avatar').style.display='none';
+  document.getElementById('signInBtn').style.display='inline-block';
+  document.getElementById('email').value=''; go('home'); toast('Signed out');
+}
+
+/* ---------- init ---------- */
+(function(){
+  const d=new Date(); d.setDate(d.getDate()+1);
+  document.getElementById('fDate').value=d.toISOString().slice(0,10);
+  document.getElementById('fDate').min=new Date().toISOString().slice(0,10);
+  renderListings();
+})();
+</script>
+</body>
+</html>
