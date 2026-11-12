@@ -463,5 +463,26 @@ function signOut(){
   renderListings();
 })();
 </script>
+  <!-- Back to HomeBound landing page -->
+<a href="/index.html" id="hb-home-btn">← Back to Home</a>
+<style>
+  #hb-home-btn {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 9999;
+    background: #C5A059;
+    color: #2A261F;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    transition: transform .15s ease, background .15s ease;
+  }
+  #hb-home-btn:hover { transform: translateY(-2px); background: #d4b06a; }
+</style>
 </body>
 </html>
