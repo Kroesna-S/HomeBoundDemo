@@ -132,7 +132,10 @@
       .hero-visual { max-width: 440px; margin: 20px auto 40px; }
     }
     @media (max-width: 760px) {
-      .nav-links a:not(.btn) { display: none; }
+      .navbar .wrap { gap: 10px; }
+      .brand .tag { display: none; }
+      .nav-links { gap: 12px; font-size: 13px; }
+      .nav-links .btn-sm { padding: 8px 12px; font-size: 12px; white-space: nowrap; }
       .how-grid { grid-template-columns: 1fr; }
       .hero { padding: 56px 0 80px; }
       .tracker { right: 0; width: 240px; }
@@ -140,7 +143,9 @@
     }
     @media (max-width: 480px) {
       .wrap { padding: 0 16px; }
-      .brand .name { font-size: 24px; }
+      .brand .name { font-size: 22px; }
+      .nav-links { gap: 10px; font-size: 12px; }
+      .nav-links .btn-sm { padding: 7px 10px; font-size: 11px; }
       .hero-ctas .btn { width: 100%; text-align: center; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -188,9 +193,7 @@
       <div class="hero-visual" aria-hidden="true">
         <div class="mock-card">
           <div class="mock-img">
-            <div class="mock-img">
               <img src="images/table.jpg" alt="Adjustable table">
-            </div>
           </div>
           <div class="mock-body">
             <div class="mock-title">Adjustable table</div>
